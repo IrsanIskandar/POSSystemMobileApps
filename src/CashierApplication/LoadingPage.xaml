@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sfcore="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
+             xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
+             x:Class="CashierApplication.LoadingPage"
+             BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource OffBlack}}"
+             Shell.TabBarIsVisible="False"
+             NavigationPage.HasNavigationBar="False">
+    <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+        <skia:SKLottieView RepeatCount="-1" 
+                           IsAnimationEnabled="True"
+                           Source="splashscreen.json"
+                           HorizontalOptions="Center"
+                           BackgroundColor="Transparent"
+                           WidthRequest="150"
+                           HeightRequest="150">
+        </skia:SKLottieView>
+        <Label Text="Authentication State..."
+               TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Purple}}"
+               HorizontalOptions="Center" />
+    </VerticalStackLayout>
+    <!--<sfcore:SfBusyIndicator IsRunning="True"
+                            AnimationType="LinearMaterial"
+                            Title="Loading..."
+                            Padding="20">
+    </sfcore:SfBusyIndicator>-->
+    <!--<VerticalStackLayout HorizontalOptions="Center"
+                         VerticalOptions="Center">
+        <ActivityIndicator IsRunning="True" />
+        <Label Text="authentication state..." />
+    </VerticalStackLayout>-->
+</ContentPage>

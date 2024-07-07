@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sfcore="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
+             x:Class="CashierApplication.Pages.Authentication.SignInPage"
+             BackgroundImageSource="new_login_dashboardhdpi.png"
+             Padding="0">
+    <Grid ColumnSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <sfcore:SfTextInputLayout 
+            Grid.Row="3" 
+            Grid.ColumnSpan="2"
+            WidthRequest="290"
+            HeightRequest="80"
+            Hint="Username"
+            ContainerType="Outlined"
+            OutlineCornerRadius="30" 
+            Stroke="{StaticResource Purple}"
+            Margin="0,-85,0,0"
+            HorizontalOptions="Center"
+            ContainerBackground="Transparent">
+            <sfcore:SfTextInputLayout.HintLabelStyle>
+                <sfcore:LabelStyle TextColor="White" />
+            </sfcore:SfTextInputLayout.HintLabelStyle>
+            
+            <Entry x:Name="TextUsername"
+                   TextColor="White"
+                   Text="{Binding Username}"
+                   Keyboard="Text" />
+        </sfcore:SfTextInputLayout>
+
+        <sfcore:SfTextInputLayout 
+            Grid.Row="4" 
+            Grid.ColumnSpan="2"
+            WidthRequest="290"
+            HeightRequest="80"
+            Hint="Password"
+            EnablePasswordVisibilityToggle="True"
+            ContainerType="Outlined"
+            OutlineCornerRadius="30" 
+            Stroke="{StaticResource Purple}"
+            Margin="0,-150,0,0"
+            HorizontalOptions="Center"
+            ContainerBackground="Transparent">
+            <sfcore:SfTextInputLayout.HintLabelStyle>
+                <sfcore:LabelStyle TextColor="White" />
+            </sfcore:SfTextInputLayout.HintLabelStyle>
+
+            <Entry x:Name="TextPassword"
+                   TextColor="White"
+                   Text="{Binding Password}"
+                   Keyboard="Text" />
+        </sfcore:SfTextInputLayout>
+
+        <ImageButton x:Name="ButtonSignInAsync"
+            Grid.Row="5"
+            Grid.ColumnSpan="2"
+            CornerRadius="50"
+            Source="arrow_righthdpi.png"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            WidthRequest="50"
+            HeightRequest="50"
+            Margin="0,-260,0,0"
+            Command="{Binding LoginActionCommand}">
+        </ImageButton>
+    </Grid>
+
+</ContentPage>

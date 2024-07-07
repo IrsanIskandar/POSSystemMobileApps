@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="CashierApplication.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:CashierApplication"
+    xmlns:main="clr-namespace:CashierApplication.Pages"
+    xmlns:auth="clr-namespace:CashierApplication.Pages.Authentication"
+    Shell.FlyoutBehavior="Disabled"
+    Shell.TabBarIsVisible="False"
+    Title="CashierApplication">
+
+    <Shell.FlyoutHeader>
+        <VerticalStackLayout Padding="20">
+            <Image Source="dotnet_bot.svg" WidthRequest="150"></Image>
+            <Label Text="Sandev Design 2024" HorizontalTextAlignment="End"></Label>
+        </VerticalStackLayout>
+    </Shell.FlyoutHeader>
+
+    <ShellContent 
+        Title=""
+        ContentTemplate="{DataTemplate local:LoadingPage}"
+        Shell.FlyoutItemIsVisible="False"
+        Route="LoadingPage" />
+
+    <ShellContent 
+        Title=""
+        ContentTemplate="{DataTemplate auth:LandingPage}"
+        Shell.FlyoutItemIsVisible="False"
+        Route="LandingPage" />
+
+    <ShellContent 
+        Title=""
+        Shell.FlyoutBehavior="Disabled"
+        Shell.TabBarIsVisible="False"
+        Shell.FlyoutItemIsVisible="False"
+        ContentTemplate="{DataTemplate auth:SignInPage}"
+        Route="SignInPage" />
+
+    <ShellContent
+        Title="Home"
+        Shell.FlyoutBehavior="Flyout"
+        Shell.TabBarIsVisible="False"
+        ContentTemplate="{DataTemplate main:MainPage}"
+        Route="MainPage" />
+
+    <!--<ShellContent
+        Title="Home"
+        Shell.FlyoutBehavior="Flyout"
+        Shell.TabBarIsVisible="False"
+        ContentTemplate="{DataTemplate main:AdminDashboard}"
+        Route="AdminDashboard" />
+
+    <ShellContent
+        Title="Home"
+        Shell.FlyoutBehavior="Flyout"
+        Shell.TabBarIsVisible="False"
+        ContentTemplate="{DataTemplate main:StaffDashboard}"
+        Route="StaffDashboard" />-->
+
+    <Shell.FlyoutFooter>
+        <StackLayout Padding="20">
+            <Button Text="Sign Out"
+                    BackgroundColor="{StaticResource Purple}"
+                    TextColor="{StaticResource White}"
+                    Command="{Binding SignoutActionCommand}" />
+        </StackLayout>
+    </Shell.FlyoutFooter>
+</Shell>
