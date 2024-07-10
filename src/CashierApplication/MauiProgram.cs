@@ -5,6 +5,7 @@ using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Syncfusion.Maui.Core.Hosting;
+using The49.Maui.BottomSheet;
 
 namespace CashierApplication
 {
@@ -15,9 +16,10 @@ namespace CashierApplication
 			MauiAppBuilder builder = MauiApp.CreateBuilder();
 
 			builder.UseMauiApp<App>()
-				.UseMauiCommunityToolkit()
 				.UseSkiaSharp()
+				.UseBottomSheet()
 				.ConfigureSyncfusionCore()
+				.UseMauiCommunityToolkit()
 				.ConfigureFonts(fonts =>
 				{
 					fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

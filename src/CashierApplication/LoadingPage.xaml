@@ -10,11 +10,10 @@
     <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
         <skia:SKLottieView RepeatCount="-1" 
                            IsAnimationEnabled="True"
-                           Source="splashscreen.json"
+                           Source="splashscreen7.json"
                            HorizontalOptions="Center"
-                           BackgroundColor="Transparent"
-                           WidthRequest="150"
-                           HeightRequest="150">
+                           WidthRequest="230"
+                           HeightRequest="230">
         </skia:SKLottieView>
         <Label Text="Authentication State..."
                TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Purple}}"

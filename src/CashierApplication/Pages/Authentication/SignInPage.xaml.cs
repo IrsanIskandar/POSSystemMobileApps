@@ -38,6 +38,8 @@ public partial class SignInPage : ContentPage
 
 		if (TextUsername.Text.Equals("admin") && TextPassword.Text.Equals("admin"))
 		{
+			TextUsername.Text = string.Empty;
+			TextPassword.Text = string.Empty;
 			await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
 		}
 		else
