@@ -21,11 +21,11 @@ public partial class Admindatasetup
 
     public string Createdby { get; set; } = null!;
 
-    public DateOnly Createddate { get; set; }
+    public DateTime Createddate { get; set; }
 
     public string? Modifyby { get; set; }
 
-    public DateOnly? Modifydate { get; set; }
+    public DateTime? Modifydate { get; set; }
 
     public virtual ICollection<Customer> Customers { get; set; } = new List<Customer>();
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace POSSystem.DataContext.DataContext;
 
-public partial class Lookupunit
+public partial class LookupUnit
 {
     public int Id { get; set; }
 
@@ -15,7 +15,7 @@ public partial class Lookupunit
 
     public string? Createby { get; set; }
 
-    public DateOnly Createddate { get; set; }
+    public DateTime Createddate { get; set; }
 
     public virtual ICollection<Mstproductcatalog> Mstproductcatalogs { get; set; } = new List<Mstproductcatalog>();
 }

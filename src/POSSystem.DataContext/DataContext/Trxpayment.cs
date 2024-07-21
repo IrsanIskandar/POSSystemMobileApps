@@ -15,11 +15,11 @@ public partial class Trxpayment
 
     public decimal? Totalamount { get; set; }
 
-    public DateOnly? Paymentdate { get; set; }
+    public DateTime? Paymentdate { get; set; }
 
     public string Createdby { get; set; } = null!;
 
-    public DateOnly Createddate { get; set; }
+    public DateTime Createddate { get; set; }
 
     public virtual Customer Customer { get; set; } = null!;
 

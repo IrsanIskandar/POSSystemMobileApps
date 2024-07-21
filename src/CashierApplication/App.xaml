@@ -8,6 +8,12 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Fa.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Fab.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Fad.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Far.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Fas.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Fat.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

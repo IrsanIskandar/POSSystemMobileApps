@@ -31,6 +31,10 @@ public partial class User
 
     public DateTime? Modifydate { get; set; }
 
+    public int? Roleid { get; set; }
+
+    public virtual LookupRole? Role { get; set; }
+
     public virtual ICollection<Trxorder> Trxorders { get; set; } = new List<Trxorder>();
 
     public virtual ICollection<Userdetail> Userdetails { get; set; } = new List<Userdetail>();

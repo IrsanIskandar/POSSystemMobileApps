@@ -33,6 +33,10 @@ public partial class VwListdatastaff
 
     public string? Salt { get; set; }
 
+    public int? RoleId { get; set; }
+
+    public string? RoleName { get; set; }
+
     public bool? Isactive { get; set; }
 
     public string? Isactivedesc { get; set; }

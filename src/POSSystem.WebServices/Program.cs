@@ -1,44 +1,110 @@
-using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using POSSystem.DataContext.DataContext;
+using POSSystem.WebServices.Helpers;
+using POSSystem.WebServices.Infrastructure.Interface;
+using POSSystem.WebServices.Infrastructure.Repository;
+using System.Text;
 
-namespace POSSystem.WebServices
+namespace POSSystem.WebServices;
+
+public class Program
 {
-	public class Program
+	public static void Main(string[] args)
 	{
-		public static void Main(string[] args)
+		var builder = WebApplication.CreateBuilder(args);
+		POSHelper.POS_CONNECTION_STRING = builder.Configuration.GetSection("ConnectionStrings").GetValue<string>("POSConnection");
+		POSHelper.POS_DB_PASSWORD = builder.Configuration.GetSection("ConnectionStrings").GetValue<string>("DbPassword");
+
+		POSHelper.JWT_KEY = builder.Configuration.GetSection("JwtConfiguration").GetValue<string>("Key");
+		POSHelper.JWT_ISSUER = builder.Configuration.GetSection("JwtConfiguration").GetValue<string>("Issuer");
+		POSHelper.JWT_AUDIENCE = builder.Configuration.GetSection("JwtConfiguration").GetValue<string>("Audience");
+
+
+		// Add services to the container.
+		builder.Services.AddControllers();
+		// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+		builder.Services.AddEndpointsApiExplorer();
+		builder.Services.AddSwaggerGen();
+		builder.Services.AddHttpContextAccessor();
+		builder.Services.AddMvc().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+
+		builder.Services.AddCors(opt =>
 		{
-			var builder = WebApplication.CreateSlimBuilder(args);
-
-			builder.Services.ConfigureHttpJsonOptions(options =>
+			opt.AddPolicy("PolicyCors", p =>
 			{
-				options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
+				p.AllowAnyOrigin();
+				p.AllowAnyHeader();
+				p.AllowAnyMethod();
 			});
+		});
 
-			var app = builder.Build();
+		builder.Services.AddDbContext<PossystemContext>(options =>
+		{
+			string decryptPlainText = SandevLibrary.SecurityAlgorithm.AESAlgorithm.DecryptTextWithSalt(POSHelper.POS_DB_PASSWORD);
+			options.UseNpgsql(POSHelper.POS_CONNECTION_STRING + $"Password={decryptPlainText};");
+		});
 
-			var sampleTodos = new Todo[] {
-				new(1, "Walk the dog"),
-				new(2, "Do the dishes", DateOnly.FromDateTime(DateTime.Now)),
-				new(3, "Do the laundry", DateOnly.FromDateTime(DateTime.Now.AddDays(1))),
-				new(4, "Clean the bathroom"),
-				new(5, "Clean the car", DateOnly.FromDateTime(DateTime.Now.AddDays(2)))
+		builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+		.AddJwtBearer(options =>
+		{
+			options.TokenValidationParameters = new TokenValidationParameters
+			{
+				ValidateIssuer = true,
+				ValidateAudience = true,
+				ValidateLifetime = true,
+				ValidateIssuerSigningKey = true,
+				ValidIssuer = POSHelper.JWT_ISSUER,
+				ValidAudience = POSHelper.JWT_AUDIENCE,
+				IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(POSHelper.JWT_KEY))
 			};
+		});
+		builder.Services.AddSession(options =>
+		{
+			options.Cookie.HttpOnly = false;
+			options.Cookie.IsEssential = true;
+		});
 
-			var todosApi = app.MapGroup("/todos");
-			todosApi.MapGet("/", () => sampleTodos);
-			todosApi.MapGet("/{id}", (int id) =>
-				sampleTodos.FirstOrDefault(a => a.Id == id) is { } todo
-					? Results.Ok(todo)
-					: Results.NotFound());
+		builder.Services.AddScoped<PossystemContext>();
+		builder.Services.AddScoped<IUserRepository, UserRepository>();
+		builder.Services.AddScoped<ITokenService, TokenService>();
 
-			app.Run();
+		builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+		var app = builder.Build();
+		app.UseSwagger();
+		app.UseSwaggerUI();
+
+		// Configure the HTTP request pipeline.
+		if (app.Environment.IsDevelopment())
+		{
+			
 		}
-	}
 
-	public record Todo(int Id, string? Title, DateOnly? DueBy = null, bool IsComplete = false);
+		app.UseSession();
+		app.UseCors();
 
-	[JsonSerializable(typeof(Todo[]))]
-	internal partial class AppJsonSerializerContext : JsonSerializerContext
-	{
+		app.Use(async (context, next) =>
+		{
+			string? token = context.Session.GetString("access_token");
+			if (!string.IsNullOrEmpty(token))
+			{
+				context.Request.Headers.Add("Authorization", "Bearer " + token);
+			}
+			await next();
+		});
 
+		app.UseHttpsRedirection();
+		app.UseStaticFiles();
+
+		app.UseRouting();
+
+		app.UseAuthorization();
+		app.UseAuthentication();
+
+		app.MapControllers();
+
+		app.Run();
 	}
 }

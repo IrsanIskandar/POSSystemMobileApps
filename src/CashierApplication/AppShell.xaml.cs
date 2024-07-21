@@ -17,5 +17,23 @@ public partial class AppShell : Shell
 		Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
 		Routing.RegisterRoute(nameof(AdminDashboard), typeof(AdminDashboard));
 		Routing.RegisterRoute(nameof(StaffDashboard), typeof(StaffDashboard));
+
+		//var items = new FlyoutItem()
+		//{
+		//	Title = "",
+		//	Route = nameof(AdminDashboard),
+		//	FlyoutDisplayOptions = FlyoutDisplayOptions.AsMultipleItems,
+		//	Items =
+		//	{
+		//		new ShellContent()
+		//		{
+		//			Title = "",
+		//			Icon = "",
+		//			ContentTemplate = new DataTemplate(typeof(StaffDashboard))
+		//		}
+		//	}
+		//};
+
+		//Items.Add(items);
 	}
 }

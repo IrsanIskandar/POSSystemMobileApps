@@ -9,18 +9,18 @@ namespace POSSystem.WebServices.Infrastructure.Repository;
 
 public class TokenService : ITokenService
 {
-	private const double EXPIRY_DURATION_MINUTES = 60;
+	private const double EXPIRY_DURATION_DAYS = 3;
 
 	public string BuildToken(string key, string issuer, VwListdatastaff user)
 	{
 		var claims = new[] {
-			new Claim("UserId", user.Userid.ToString()),
-			new Claim("NIK", user.Personalidentity ?? string.Empty),
+			new Claim("Userid", user.Userid.ToString()),
+			new Claim("Personalidentity", user.Personalidentity ?? string.Empty),
 			new Claim("Username", user.Username),
 			new Claim("Firstname", user.Firstname),
-			new Claim("LastName", user.Lastname ?? string.Empty),
-			new Claim("EmailAddress", user.Emailaddress),
-			new Claim("Lastlogindate", user.Lastlogindate.ToString()),
+			new Claim("Lastname", user.Lastname ?? string.Empty),
+			new Claim("Emailaddress", user.Emailaddress),
+			new Claim("Lastlogindate", user.Lastlogindate == null ? "" : user.Lastlogindate.ToString()),
 			new Claim("Isconfirmationaccount", user.Isconfirmationaccount.ToString()),
 			new Claim("Fulladdress", user.Fulladdress ?? string.Empty),
 			new Claim("Genderid", user.Genderid.ToString() ?? string.Empty),
@@ -35,14 +35,14 @@ public class TokenService : ITokenService
 			new Claim("Createdby", user.Createdby ?? string.Empty),
 			new Claim("Createddate", user.Createddate.Value.ToString()),
 			new Claim("Modifiedby", user.Modifiedby ?? string.Empty),
-			new Claim("Modifieddate", user.Modifieddate.Value.ToString()),
+			new Claim("Modifieddate", user.Modifieddate == null ? "" :user.Modifieddate.Value.ToString()),
 			new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString())
 		};
 
 		var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
 		var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha384Signature);
 		var tokenDescriptor = new JwtSecurityToken(issuer, issuer, claims,
-			expires: DateTime.Now.AddMinutes(EXPIRY_DURATION_MINUTES), signingCredentials: credentials);
+			expires: DateTime.Now.AddDays(EXPIRY_DURATION_DAYS), signingCredentials: credentials);
 
 		return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
 	}
@@ -104,74 +104,98 @@ public class TokenService : ITokenService
 		VwListdatastaff obj = new VwListdatastaff();
 		if (claims.Count() > 0)
 		{
-			foreach (var item in claims)
+			try
 			{
-				switch (item.Type)
+				foreach (var item in claims)
 				{
-					case "Userid":
-						obj.Userid = int.Parse(item.Value);
-						break;
-					case "Personalidentity":
-						obj.Personalidentity = item.Value;
-						break;
-					case "Username":
-						obj.Username = item.Value;
-						break;
-					case "Firstname":
-						obj.Firstname = item.Value;
-						break;
-					case "Lastname":
-						obj.Lastname = item.Value;
-						break;
-					case "Emailaddress":
-						obj.Emailaddress = item.Value;
-						break;
-					case "Lastlogindate":
-						obj.Lastlogindate = Convert.ToDateTime(item.Value);
-						break;
-					case "Fulladdress":
-						obj.Fulladdress = item.Value;
-						break;
-					case "Genderid":
-						obj.Genderid = item.Value != string.Empty ? Convert.ToInt32(item.Value) : -1;
-						break;
-					case "Gendername":
-						obj.Gendername = item.Value;
-						break;
-					case "Mobilephone":
-						obj.Mobilephone = item.Value;
-						break;
-					case "Password":
-						obj.Password = item.Value;
-						break;
-					case "Salt":
-						obj.Salt = item.Value;
-						break;
-					case "Isactive":
-						obj.Isactive = Convert.ToBoolean(item.Value);
-						break;
-					case "Isactivedesc":
-						obj.Isactivedesc = item.Value;
-						break;
-					case "Isdeleted":
-						obj.Isdeleted = Convert.ToBoolean(item.Value);
-						break;
-					case "Isdeleteddesc":
-						obj.Isdeleteddesc = item.Value;
-						break;
-					case "Createdby":
-						obj.Createdby = item.Value;
-						break;
-					case "Createddate":
-						obj.Createddate = Convert.ToDateTime(item.Value);
-						break;
-					case "Modifiedby":
-						obj.Modifiedby = item.Value;
-						break;
-					case "Modifieddate":
-						obj.Modifieddate = Convert.ToDateTime(item.Value);
-						break;
+					switch (item.Type)
+					{
+						case "Userid":
+							obj.Userid = int.Parse(item.Value);
+							break;
+						case "Personalidentity":
+							if (!string.IsNullOrWhiteSpace(item.Value))
+								obj.Personalidentity = item.Value;
+							break;
+						case "Username":
+							obj.Username = item.Value;
+							break;
+						case "Firstname":
+							obj.Firstname = item.Value;
+							break;
+						case "Lastname":
+							if (!string.IsNullOrWhiteSpace(item.Value))
+								obj.Lastname = item.Value;
+							break;
+						case "Emailaddress":
+							if (!string.IsNullOrWhiteSpace(item.Value))
+								obj.Emailaddress = item.Value;
+							break;
+						case "Lastlogindate":
+							if (!string.IsNullOrWhiteSpace(item.Value))
+								obj.Lastlogindate = Convert.ToDateTime(item.Value);
+							break;
+						case "Fulladdress":
+							if (!string.IsNullOrWhiteSpace(item.Value))
+								obj.Fulladdress = item.Value;
+							break;
+						case "Genderid":
+							if (!string.IsNullOrWhiteSpace(item.Value))
+								obj.Genderid = Convert.ToInt32(item.Value);
+							break;
+						case "Gendername":
+							obj.Gendername = item.Value;
+							break;
+						case "Mobilephone":
+							if (!string.IsNullOrWhiteSpace(item.Value))
+								obj.Mobilephone = item.Value;
+							break;
+						case "Password":
+							if (!string.IsNullOrWhiteSpace(item.Value))
+								obj.Password = item.Value;
+							break;
+						case "Salt":
+							if (!string.IsNullOrWhiteSpace(item.Value))
+								obj.Salt = item.Value;
+							break;
+						case "Isactive":
+							if (!string.IsNullOrWhiteSpace(item.Value))
+								obj.Isactive = Convert.ToBoolean(item.Value);
+							break;
+						case "Isactivedesc":
+							if (!string.IsNullOrWhiteSpace(item.Value))
+								obj.Isactivedesc = item.Value;
+							break;
+						case "Isdeleted":
+							if (!string.IsNullOrWhiteSpace(item.Value))
+								obj.Isdeleted = Convert.ToBoolean(item.Value);
+							break;
+						case "Isdeleteddesc":
+							if (!string.IsNullOrWhiteSpace(item.Value))
+								obj.Isdeleteddesc = item.Value;
+							break;
+						case "Createdby":
+							if (!string.IsNullOrWhiteSpace(item.Value))
+								obj.Createdby = item.Value;
+							break;
+						case "Createddate":
+							if (!string.IsNullOrWhiteSpace(item.Value))
+								obj.Createddate = Convert.ToDateTime(item.Value);
+							break;
+						case "Modifiedby":
+							if (!string.IsNullOrWhiteSpace(item.Value))
+								obj.Modifiedby = item.Value;
+							break;
+						case "Modifieddate":
+							if (!string.IsNullOrWhiteSpace(item.Value))
+								obj.Modifieddate = Convert.ToDateTime(item.Value);
+							break;
+					}
 				}
+			}
+			catch
+			{
+				throw;
 			}
 		}
 

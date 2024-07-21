@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace POSSystem.DataContext.DataContext;
 
-public partial class Lookupproductcategory
+public partial class LookupProductCategory
 {
     public int Id { get; set; }
 
@@ -15,7 +15,7 @@ public partial class Lookupproductcategory
 
     public string? Createdby { get; set; }
 
-    public DateOnly Createddate { get; set; }
+    public DateTime Createddate { get; set; }
 
     public string? Categorycode { get; set; }
 

@@ -17,7 +17,7 @@ public partial class Trxorder
 
     public int? Orderstatusid { get; set; }
 
-    public DateOnly? Orderdate { get; set; }
+    public DateTime? Orderdate { get; set; }
 
     public virtual Customer Customer { get; set; } = null!;
 

@@ -21,11 +21,11 @@ public partial class Customer
 
     public string Createdby { get; set; } = null!;
 
-    public DateOnly Createddate { get; set; }
+    public DateTime Createddate { get; set; }
 
     public string? Modifyby { get; set; }
 
-    public DateOnly? Modifydate { get; set; }
+    public DateTime? Modifydate { get; set; }
 
     public virtual Admindatasetup? Gender { get; set; }
 

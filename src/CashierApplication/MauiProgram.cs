@@ -26,6 +26,12 @@ namespace CashierApplication
 					fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 					fonts.AddFont("Blantick-Script.ttf", "BlantickScript");
 					fonts.AddFont("Hello-Samosa.ttf", "HelloSamosa");
+					fonts.AddFont("fa-solid-900.ttf", "Fa");
+					fonts.AddFont("fa-brands-400.ttf", "Fab");
+					fonts.AddFont("fa-duotone-900.ttf", "Fad");
+					fonts.AddFont("fa-regular-400.ttf", "Far");
+					fonts.AddFont("fa-sharp-regular-400.ttf", "Fas");
+					fonts.AddFont("fa-thin-100.ttf", "Fat");
 				});
 
 #if DEBUG

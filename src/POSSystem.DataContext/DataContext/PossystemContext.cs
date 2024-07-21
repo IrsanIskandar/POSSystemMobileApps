@@ -19,9 +19,15 @@ public partial class PossystemContext : DbContext
 
     public virtual DbSet<Customer> Customers { get; set; }
 
-    public virtual DbSet<Lookupproductcategory> Lookupproductcategories { get; set; }
+    public virtual DbSet<Deviceinformation> Deviceinformations { get; set; }
 
-    public virtual DbSet<Lookupunit> Lookupunits { get; set; }
+    public virtual DbSet<LookupModule> LookupModules { get; set; }
+
+    public virtual DbSet<LookupProductCategory> LookupProductCategories { get; set; }
+
+    public virtual DbSet<LookupRole> LookupRoles { get; set; }
+
+    public virtual DbSet<LookupUnit> LookupUnits { get; set; }
 
     public virtual DbSet<Menu> Menus { get; set; }
 
@@ -35,6 +41,8 @@ public partial class PossystemContext : DbContext
 
     public virtual DbSet<Userdetail> Userdetails { get; set; }
 
+    public virtual DbSet<VwGetmodulelist> VwGetmodulelists { get; set; }
+
     public virtual DbSet<VwListdatastaff> VwListdatastaffs { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -46,13 +54,15 @@ public partial class PossystemContext : DbContext
             entity.ToTable("admindatasetup");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
+                .HasIdentityOptions(null, null, null, null, true, null)
                 .HasColumnName("id");
             entity.Property(e => e.Createdby)
                 .HasMaxLength(50)
                 .HasColumnName("createdby");
             entity.Property(e => e.Createddate)
-                .HasDefaultValueSql("now()")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
                 .HasColumnName("createddate");
             entity.Property(e => e.Isactive)
                 .HasDefaultValue(true)
@@ -63,7 +73,9 @@ public partial class PossystemContext : DbContext
             entity.Property(e => e.Modifyby)
                 .HasMaxLength(50)
                 .HasColumnName("modifyby");
-            entity.Property(e => e.Modifydate).HasColumnName("modifydate");
+            entity.Property(e => e.Modifydate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("modifydate");
             entity.Property(e => e.Nameeng)
                 .HasMaxLength(255)
                 .HasColumnName("nameeng");
@@ -83,7 +95,8 @@ public partial class PossystemContext : DbContext
             entity.ToTable("customer");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
+                .HasIdentityOptions(null, null, null, null, true, null)
                 .HasColumnName("id");
             entity.Property(e => e.Address)
                 .HasMaxLength(500)
@@ -92,7 +105,8 @@ public partial class PossystemContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("createdby");
             entity.Property(e => e.Createddate)
-                .HasDefaultValueSql("now()")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
                 .HasColumnName("createddate");
             entity.Property(e => e.Customername)
                 .HasMaxLength(150)
@@ -108,21 +122,114 @@ public partial class PossystemContext : DbContext
             entity.Property(e => e.Modifyby)
                 .HasMaxLength(50)
                 .HasColumnName("modifyby");
-            entity.Property(e => e.Modifydate).HasColumnName("modifydate");
+            entity.Property(e => e.Modifydate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("modifydate");
 
             entity.HasOne(d => d.Gender).WithMany(p => p.Customers)
                 .HasForeignKey(d => d.Genderid)
                 .HasConstraintName("customer__genderid_fk");
         });
 
-        modelBuilder.Entity<Lookupproductcategory>(entity =>
+        modelBuilder.Entity<Deviceinformation>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("lookupproductcategory_pk");
+            entity.HasKey(e => e.Id).HasName("deviceinformation_pk");
 
-            entity.ToTable("lookupproductcategory");
+            entity.ToTable("deviceinformation");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
+                .HasIdentityOptions(null, null, null, null, true, null)
+                .HasColumnName("id");
+            entity.Property(e => e.Createddate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("createddate");
+            entity.Property(e => e.Devicename)
+                .HasMaxLength(150)
+                .HasColumnName("devicename");
+            entity.Property(e => e.Devicetype)
+                .HasMaxLength(25)
+                .HasColumnName("devicetype");
+            entity.Property(e => e.Idiom)
+                .HasMaxLength(150)
+                .HasColumnName("idiom");
+            entity.Property(e => e.Manufacturer)
+                .HasMaxLength(150)
+                .HasColumnName("manufacturer");
+            entity.Property(e => e.Model)
+                .HasMaxLength(150)
+                .HasColumnName("model");
+            entity.Property(e => e.Osversion)
+                .HasMaxLength(150)
+                .HasColumnName("osversion");
+            entity.Property(e => e.Platform)
+                .HasMaxLength(150)
+                .HasColumnName("platform");
+        });
+
+        modelBuilder.Entity<LookupModule>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("lookup_module_pk");
+
+            entity.ToTable("lookup_module");
+
+            entity.Property(e => e.Id)
+                .UseIdentityAlwaysColumn()
+                .HasIdentityOptions(null, null, null, null, true, null)
+                .HasColumnName("id");
+            entity.Property(e => e.Contenttemplate)
+                .HasMaxLength(150)
+                .HasColumnName("contenttemplate");
+            entity.Property(e => e.Createdby)
+                .HasMaxLength(50)
+                .HasColumnName("createdby");
+            entity.Property(e => e.Createddate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("createddate");
+            entity.Property(e => e.Isactive)
+                .HasDefaultValue(true)
+                .HasColumnName("isactive");
+            entity.Property(e => e.Isdeleted)
+                .HasDefaultValue(false)
+                .HasColumnName("isdeleted");
+            entity.Property(e => e.Ismultipleitems)
+                .HasDefaultValue(false)
+                .HasColumnName("ismultipleitems");
+            entity.Property(e => e.Isparent).HasColumnName("isparent");
+            entity.Property(e => e.Modifiedby)
+                .HasMaxLength(50)
+                .HasColumnName("modifiedby");
+            entity.Property(e => e.Modifieddate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("modifieddate");
+            entity.Property(e => e.Moduledescription)
+                .HasMaxLength(120)
+                .HasColumnName("moduledescription");
+            entity.Property(e => e.Moduleicon)
+                .HasMaxLength(50)
+                .HasColumnName("moduleicon");
+            entity.Property(e => e.Modulename)
+                .HasMaxLength(80)
+                .HasColumnName("modulename");
+            entity.Property(e => e.Parentmoduleid).HasColumnName("parentmoduleid");
+            entity.Property(e => e.Roleid).HasColumnName("roleid");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.LookupModules)
+                .HasForeignKey(d => d.Roleid)
+                .HasConstraintName("lookup_module_lookup_roles_id_fk");
+        });
+
+        modelBuilder.Entity<LookupProductCategory>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("lookup_product_category_pk");
+
+            entity.ToTable("lookup_product_category");
+
+            entity.Property(e => e.Id)
+                .UseIdentityAlwaysColumn()
+                .HasIdentityOptions(null, null, null, null, true, null)
                 .HasColumnName("id");
             entity.Property(e => e.Categorycode)
                 .HasMaxLength(50)
@@ -134,7 +241,8 @@ public partial class PossystemContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("createdby");
             entity.Property(e => e.Createddate)
-                .HasDefaultValueSql("now()")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
                 .HasColumnName("createddate");
             entity.Property(e => e.Isactive)
                 .HasDefaultValue(true)
@@ -144,20 +252,50 @@ public partial class PossystemContext : DbContext
                 .HasColumnName("isdeleted");
         });
 
-        modelBuilder.Entity<Lookupunit>(entity =>
+        modelBuilder.Entity<LookupRole>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("lookupunit_pk");
+            entity.HasKey(e => e.Id).HasName("lookup_roles_pk");
 
-            entity.ToTable("lookupunit");
+            entity.ToTable("lookup_roles");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
+                .HasIdentityOptions(null, null, null, null, true, null)
+                .HasColumnName("id");
+            entity.Property(e => e.Createdate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("createdate");
+            entity.Property(e => e.Createdby)
+                .HasMaxLength(50)
+                .HasColumnName("createdby");
+            entity.Property(e => e.Isactive)
+                .HasDefaultValue(true)
+                .HasColumnName("isactive");
+            entity.Property(e => e.Roledescription)
+                .HasMaxLength(150)
+                .HasColumnName("roledescription");
+            entity.Property(e => e.Rolename)
+                .HasMaxLength(50)
+                .HasColumnName("rolename");
+        });
+
+        modelBuilder.Entity<LookupUnit>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("lookup_unit_pk");
+
+            entity.ToTable("lookup_unit");
+
+            entity.Property(e => e.Id)
+                .UseIdentityAlwaysColumn()
+                .HasIdentityOptions(null, null, null, null, true, null)
                 .HasColumnName("id");
             entity.Property(e => e.Createby)
                 .HasMaxLength(50)
                 .HasColumnName("createby");
             entity.Property(e => e.Createddate)
-                .HasDefaultValueSql("now()")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
                 .HasColumnName("createddate");
             entity.Property(e => e.Isactive)
                 .HasDefaultValue(true)
@@ -177,13 +315,15 @@ public partial class PossystemContext : DbContext
             entity.ToTable("menu");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
+                .HasIdentityOptions(null, null, null, null, true, null)
                 .HasColumnName("id");
             entity.Property(e => e.Createdby)
                 .HasMaxLength(50)
                 .HasColumnName("createdby");
             entity.Property(e => e.Createddate)
-                .HasDefaultValueSql("now()")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
                 .HasColumnName("createddate");
             entity.Property(e => e.Description)
                 .HasMaxLength(500)
@@ -200,7 +340,9 @@ public partial class PossystemContext : DbContext
             entity.Property(e => e.Modifyby)
                 .HasMaxLength(50)
                 .HasColumnName("modifyby");
-            entity.Property(e => e.Modifydate).HasColumnName("modifydate");
+            entity.Property(e => e.Modifydate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("modifydate");
             entity.Property(e => e.Price).HasColumnName("price");
         });
 
@@ -218,7 +360,8 @@ public partial class PossystemContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("createdby");
             entity.Property(e => e.Createddate)
-                .HasDefaultValueSql("now()")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
                 .HasColumnName("createddate");
             entity.Property(e => e.Isactive)
                 .HasDefaultValue(true)
@@ -229,7 +372,9 @@ public partial class PossystemContext : DbContext
             entity.Property(e => e.Modifyby)
                 .HasMaxLength(50)
                 .HasColumnName("modifyby");
-            entity.Property(e => e.Modifydate).HasColumnName("modifydate");
+            entity.Property(e => e.Modifydate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("modifydate");
             entity.Property(e => e.Poductimagepath)
                 .HasMaxLength(255)
                 .HasColumnName("poductimagepath");
@@ -265,14 +410,17 @@ public partial class PossystemContext : DbContext
             entity.HasIndex(e => e.Ordercode, "trxorder__ordercode_uq").IsUnique();
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
+                .HasIdentityOptions(null, null, null, null, true, null)
                 .HasColumnName("id");
             entity.Property(e => e.Customerid).HasColumnName("customerid");
             entity.Property(e => e.Menuid).HasColumnName("menuid");
             entity.Property(e => e.Ordercode)
                 .HasMaxLength(50)
                 .HasColumnName("ordercode");
-            entity.Property(e => e.Orderdate).HasColumnName("orderdate");
+            entity.Property(e => e.Orderdate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("orderdate");
             entity.Property(e => e.Orderstatusid).HasColumnName("orderstatusid");
             entity.Property(e => e.Userid).HasColumnName("userid");
 
@@ -303,17 +451,21 @@ public partial class PossystemContext : DbContext
             entity.ToTable("trxpayment");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
+                .HasIdentityOptions(null, null, null, null, true, null)
                 .HasColumnName("id");
             entity.Property(e => e.Createdby)
                 .HasMaxLength(50)
                 .HasColumnName("createdby");
             entity.Property(e => e.Createddate)
-                .HasDefaultValueSql("now()")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
                 .HasColumnName("createddate");
             entity.Property(e => e.Customerid).HasColumnName("customerid");
             entity.Property(e => e.Orderid).HasColumnName("orderid");
-            entity.Property(e => e.Paymentdate).HasColumnName("paymentdate");
+            entity.Property(e => e.Paymentdate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("paymentdate");
             entity.Property(e => e.Paymenttypeid).HasColumnName("paymenttypeid");
             entity.Property(e => e.Totalamount).HasColumnName("totalamount");
 
@@ -339,13 +491,15 @@ public partial class PossystemContext : DbContext
             entity.ToTable("User");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
+                .HasIdentityOptions(null, null, null, null, true, null)
                 .HasColumnName("id");
             entity.Property(e => e.Createdby)
                 .HasMaxLength(50)
                 .HasColumnName("createdby");
             entity.Property(e => e.Createddate)
-                .HasDefaultValueSql("now()")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
                 .HasColumnName("createddate");
             entity.Property(e => e.Emailaddress)
                 .HasMaxLength(100)
@@ -359,20 +513,29 @@ public partial class PossystemContext : DbContext
             entity.Property(e => e.Isdeleted)
                 .HasDefaultValue(false)
                 .HasColumnName("isdeleted");
-            entity.Property(e => e.Lastlogindate).HasColumnName("lastlogindate");
+            entity.Property(e => e.Lastlogindate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("lastlogindate");
             entity.Property(e => e.Modifyby)
                 .HasMaxLength(50)
                 .HasColumnName("modifyby");
-            entity.Property(e => e.Modifydate).HasColumnName("modifydate");
+            entity.Property(e => e.Modifydate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("modifydate");
             entity.Property(e => e.Password)
                 .HasMaxLength(500)
                 .HasColumnName("password");
+            entity.Property(e => e.Roleid).HasColumnName("roleid");
             entity.Property(e => e.Salt)
                 .HasMaxLength(500)
                 .HasColumnName("salt");
             entity.Property(e => e.Username)
                 .HasMaxLength(80)
                 .HasColumnName("username");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.Users)
+                .HasForeignKey(d => d.Roleid)
+                .HasConstraintName("user_roleid__fk");
         });
 
         modelBuilder.Entity<Userdetail>(entity =>
@@ -382,13 +545,15 @@ public partial class PossystemContext : DbContext
             entity.ToTable("userdetail");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
+                .HasIdentityOptions(null, null, null, null, true, null)
                 .HasColumnName("id");
             entity.Property(e => e.Createdby)
                 .HasMaxLength(50)
                 .HasColumnName("createdby");
             entity.Property(e => e.Createddate)
-                .HasDefaultValueSql("now()")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
                 .HasColumnName("createddate");
             entity.Property(e => e.Firstname)
                 .HasMaxLength(150)
@@ -409,7 +574,9 @@ public partial class PossystemContext : DbContext
             entity.Property(e => e.Modifyby)
                 .HasMaxLength(50)
                 .HasColumnName("modifyby");
-            entity.Property(e => e.Modifydate).HasColumnName("modifydate");
+            entity.Property(e => e.Modifydate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("modifydate");
             entity.Property(e => e.Nikorpassport)
                 .HasMaxLength(50)
                 .HasColumnName("nikorpassport");
@@ -425,6 +592,23 @@ public partial class PossystemContext : DbContext
                 .HasConstraintName("userdetail_userid_fk");
         });
 
+        modelBuilder.Entity<VwGetmodulelist>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_getmodulelist");
+
+            entity.Property(e => e.ContentTemplate).HasMaxLength(150);
+            entity.Property(e => e.CreatedDate).HasColumnType("timestamp without time zone");
+            entity.Property(e => e.Createdby).HasMaxLength(50);
+            entity.Property(e => e.ModifiedBy).HasMaxLength(50);
+            entity.Property(e => e.ModifiedDate).HasColumnType("timestamp without time zone");
+            entity.Property(e => e.ModuleDescription).HasMaxLength(120);
+            entity.Property(e => e.ModuleIcon).HasMaxLength(50);
+            entity.Property(e => e.ModuleName).HasMaxLength(80);
+            entity.Property(e => e.RoleName).HasMaxLength(50);
+        });
+
         modelBuilder.Entity<VwListdatastaff>(entity =>
         {
             entity
@@ -434,7 +618,9 @@ public partial class PossystemContext : DbContext
             entity.Property(e => e.Createdby)
                 .HasMaxLength(50)
                 .HasColumnName("createdby");
-            entity.Property(e => e.Createddate).HasColumnName("createddate");
+            entity.Property(e => e.Createddate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("createddate");
             entity.Property(e => e.Emailaddress)
                 .HasMaxLength(100)
                 .HasColumnName("emailaddress");
@@ -453,7 +639,9 @@ public partial class PossystemContext : DbContext
             entity.Property(e => e.Isconfirmationaccount).HasColumnName("isconfirmationaccount");
             entity.Property(e => e.Isdeleted).HasColumnName("isdeleted");
             entity.Property(e => e.Isdeleteddesc).HasColumnName("isdeleteddesc");
-            entity.Property(e => e.Lastlogindate).HasColumnName("lastlogindate");
+            entity.Property(e => e.Lastlogindate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("lastlogindate");
             entity.Property(e => e.Lastname)
                 .HasMaxLength(150)
                 .HasColumnName("lastname");
@@ -463,11 +651,14 @@ public partial class PossystemContext : DbContext
             entity.Property(e => e.Modifiedby)
                 .HasMaxLength(50)
                 .HasColumnName("modifiedby");
-            entity.Property(e => e.Modifieddate).HasColumnName("modifieddate");
+            entity.Property(e => e.Modifieddate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("modifieddate");
             entity.Property(e => e.Password).HasMaxLength(500);
             entity.Property(e => e.Personalidentity)
                 .HasMaxLength(50)
                 .HasColumnName("personalidentity");
+            entity.Property(e => e.RoleName).HasMaxLength(50);
             entity.Property(e => e.Salt).HasMaxLength(500);
             entity.Property(e => e.Userid).HasColumnName("userid");
             entity.Property(e => e.Username)

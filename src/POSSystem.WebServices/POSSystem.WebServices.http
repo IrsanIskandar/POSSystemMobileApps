@@ -1,11 +1,6 @@
-@POSSystem.WebServices_HostAddress = http://localhost:5097
+@POSSystem.WebServices_HostAddress = http://localhost:5244
 
-GET {{POSSystem.WebServices_HostAddress}}/todos/
-Accept: application/json
-
-###
-
-GET {{POSSystem.WebServices_HostAddress}}/todos/1
+GET {{POSSystem.WebServices_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###

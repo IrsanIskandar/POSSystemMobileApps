@@ -29,15 +29,15 @@ public partial class Mstproductcatalog
 
     public string Createdby { get; set; } = null!;
 
-    public DateOnly Createddate { get; set; }
+    public DateTime Createddate { get; set; }
 
     public string? Modifyby { get; set; }
 
-    public DateOnly? Modifydate { get; set; }
+    public DateTime? Modifydate { get; set; }
 
     public string? Poductimagepath { get; set; }
 
-    public virtual Lookupproductcategory? Category { get; set; }
+    public virtual LookupProductCategory? Category { get; set; }
 
-    public virtual Lookupunit? Unit { get; set; }
+    public virtual LookupUnit? Unit { get; set; }
 }

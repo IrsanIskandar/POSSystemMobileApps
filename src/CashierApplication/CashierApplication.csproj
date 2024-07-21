@@ -68,6 +68,12 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Fonts\Blantick-Script.ttf" />
+	  <None Remove="Resources\Fonts\fa-brands-400.ttf" />
+	  <None Remove="Resources\Fonts\fa-duotone-900.ttf" />
+	  <None Remove="Resources\Fonts\fa-regular-400.ttf" />
+	  <None Remove="Resources\Fonts\fa-sharp-regular-400.ttf" />
+	  <None Remove="Resources\Fonts\fa-solid-900.ttf" />
+	  <None Remove="Resources\Fonts\fa-thin-100.ttf" />
 	  <None Remove="Resources\Fonts\Hello-Samosa.ttf" />
 	  <None Remove="Resources\Images\arrow_righthdpi.png" />
 	  <None Remove="Resources\Images\hand_drawn_ramen.png" />
@@ -112,6 +118,21 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\StaffDashboard.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\Fa.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\Fad.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\Far.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\Fas.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\Fat.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
